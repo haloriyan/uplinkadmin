@@ -1,0 +1,33 @@
+body {
+    background-color: #2ecc7110;
+}
+nav.main-menu {
+    position: fixed;
+    bottom: 0px;left: 0px;right: 0px;
+    padding: 15px 0px;
+    border-top: 1px solid #ddd;
+    background-color: #fff;
+    z-index: 2;
+}
+nav.main-menu a { color: #666; }
+nav.main-menu li {
+    text-align: center;
+}
+nav.main-menu li .text {
+    font-size: 12px;
+    margin-top: 5px;
+}
+nav.main-menu li.active {
+    color: #2ecc71;
+}
+
+.content {
+    position: absolute;
+    top: 5%;left: 5%;right: 5%;
+    z-index: 1;
+}
+
+header {
+    position: fixed;
+    top: 20px;left: 5%;right: 5%;
+}

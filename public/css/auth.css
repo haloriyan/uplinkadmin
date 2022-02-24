@@ -1,0 +1,21 @@
+body { background-color: #fff; }
+
+.illustration {
+    position: fixed;
+    top: -10px;left: 0px;bottom: 0px;
+    width: 55%;
+    text-align: center;
+}
+.illustration img {
+    width: 100%;
+}
+.content {
+    position: absolute;
+    top: 30px;right: 5%;
+    left: 55%;
+}
+.content h2 {
+    color: #01797F;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
