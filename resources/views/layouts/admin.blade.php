@@ -129,7 +129,7 @@
           <li class="nav-item dropdown pe-3">
             <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
               <img
-                src="https://media-exp1.licdn.com/dms/image/C4D03AQES3lFEdrZfOw/profile-displayphoto-shrink_100_100/0/1626272694982?e=1647475200&v=beta&t=GnYBffjmKjfP2tOtmoYWZ874m-4FkxVgQUH1aI2MKzI"
+                src="{{ asset('images/default-icon.png') }}"
                 alt="Profile"
                 class="rounded-circle"
               />
@@ -149,26 +149,6 @@
                 <a class="dropdown-item d-flex align-items-center" href="{{ route('admin.profile') }}" hrefss="users-profile.html">
                   <i class="bi bi-person"></i>
                   <span>My Profile</span>
-                </a>
-              </li>
-              <li>
-                <hr class="dropdown-divider" />
-              </li>
-
-              <li>
-                <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                  <i class="bi bi-gear"></i>
-                  <span>Account Settings</span>
-                </a>
-              </li>
-              <li>
-                <hr class="dropdown-divider" />
-              </li>
-
-              <li>
-                <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                  <i class="bi bi-question-circle"></i>
-                  <span>Need Help?</span>
                 </a>
               </li>
               <li>
@@ -205,13 +185,10 @@
           <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#"> <i class="bi bi-menu-button-wide"></i><span>Transaction</span><i class="bi bi-chevron-down ms-auto"></i> </a>
           <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
             <li>
-              <a href="{{ route('sales') }}"> <i class="bi bi-circle"></i><span>Recents</span> </a>
+              <a href="{{ route('sales') }}"> <i class="bi bi-circle"></i><span>Sales</span> </a>
             </li>
             <li>
-              <a href="transaction-product.html"> <i class="bi bi-circle"></i><span>Product</span> </a>
-            </li>
-            <li>
-              <a href="{{ route('sales.digitalProduct') }}"> <i class="bi bi-circle"></i><span>Digital Product</span> </a>
+              <a href="{{ route('admin.withdrawal') }}"> <i class="bi bi-circle"></i><span>Withdrawal</span> </a>
             </li>
           </ul>
         </li>

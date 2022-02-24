@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use Hash;
 use Session;
 use \Carbon\Carbon;
+use App\Models\Admin;
 use App\Models\User;
 use App\Models\UserWithdraw;
 use App\Models\Visitor;
@@ -34,16 +36,17 @@ class AdminController extends Controller
             'password' => $request->password,
         ]);
 
+        $redirectTo = $request->r != "" ? $request->r : "admin.dashboard";
+
         if (!$loggingIn) {
-            return redirect()->route('admin.loginPage')->withErrors(['Kombinasi email dan password tidak tepat']);
+            return redirect()->route('admin.loginPage', ['r' => $redirectTo])->withErrors(['Email and password combination does not match']);
         }
 
-        $redirectTo = $request->r != "" ? $request->r : "admin.dashboard";
         return redirect()->route($redirectTo);
     }
     public function logout() {
         $loggingOut = Auth::guard('admin')->logout();
-        return redirect()->route('admin.loginPage')->with(['message' => "Berhasil logout"]);
+        return redirect()->route('admin.loginPage')->with(['message' => "Succesfully logged out"]);
     }
     public function dashboard() {
         $myData = self::me();
@@ -58,7 +61,7 @@ class AdminController extends Controller
 
         $startDate = $now->subMonth(6)->startOfMonth()->format('Y-m-d');
         $sellerGrowthRaw = User::whereBetween('created_at', [$startDate, $endDate])->get('created_at');
-        $revenueGrowthRaw = VisitorOrder::where('is_placed', 1)
+        $revenueGrowthRaw = VisitorOrder::where('is_placed', 1)->orderBy('created_at', 'ASC')
         ->whereBetween('created_at', [$startDate, $endDate])->get(['grand_total','created_at']);
 
         $sellerGrowth = [];
@@ -89,12 +92,6 @@ class AdminController extends Controller
             'customerThisMonth' => $customerThisMonth,
             'sellerGrowth' => $sellerGrowth,
             'revenueGrowth' => $revenueGrowth,
-        ]);
-    }
-    public function profile() {
-        $myData = self::me();
-        return view('profile', [
-            'myData' => $myData,
         ]);
     }
     public function withdrawal() {
@@ -236,5 +233,46 @@ class AdminController extends Controller
             'mostValuableCustomer' => $mostValuableCustomer,
             'recentCustomer' => $recentCustomer,
         ]);
+    }
+    public function profile() {
+        $myData = self::me();
+        $message = Session::get('message');
+
+        return view('profile', [
+            'myData' => $myData,
+            'message' => $message
+        ]);
+    }
+    public function updateProfile(Request $request) {
+        $myData = self::me();
+        $data = Admin::where('id', $myData->id);
+        $myData = $data->first();
+
+        if ($request->type == "info") {
+            $toUpdate = [
+                'name' => $request->name,
+                'email' => $request->email,
+            ];
+
+            $updateData = $data->update($toUpdate);
+            return redirect()->route('admin.profile')->with(['message' => "Profile has been changed"]);
+        } else {
+            $oldPassword = $request->oldPassword;
+            $newPassword = $request->newPassword;
+            $rePassword = $request->rePassword;
+
+            $oldMatch = Hash::check($oldPassword, $myData->password);
+            if (!$oldMatch) {
+                return redirect()->route('admin.profile')->withErrors(['Old password is not correct']);
+            } else if ($newPassword != $rePassword) {
+                return redirect()->route('admin.profile')->withErrors(['New password does not match with Re-Type password']);
+            }
+
+            $updateData = $data->update([
+                'password' => bcrypt($newPassword)
+            ]);
+            $loggingOut = Auth::guard('admin')->logout();
+            return redirect()->route('admin.loginPage', ['r' => 'admin.profile'])->with(['message' => "Password has been changed. Please login again"]);
+        }
     }
 }

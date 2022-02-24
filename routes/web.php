@@ -12,6 +12,7 @@ Route::post('login', "AdminController@login")->name('admin.login');
 Route::get('logout', "AdminController@logout")->name('admin.logout')->middleware('Admin');
 Route::get('dashboard', "AdminController@dashboard")->name('admin.dashboard')->middleware('Admin');
 Route::get('profile', "AdminController@profile")->name('admin.profile')->middleware('Admin');
+Route::post('profile/update', "AdminController@updateProfile")->name('profile.update')->middleware('Admin');
 Route::get('withdrawal', "AdminController@withdrawal")->name('admin.withdrawal')->middleware('Admin');
 
 Route::group(['prefix' => 'sales'], function () {
