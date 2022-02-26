@@ -7,6 +7,7 @@ use Hash;
 use Session;
 use \Carbon\Carbon;
 use App\Models\Admin;
+use App\Models\Setting;
 use App\Models\User;
 use App\Models\UserWithdraw;
 use App\Models\Visitor;
@@ -103,13 +104,19 @@ class AdminController extends Controller
             'datas' => $datas,
         ]);
     }
-    public function sales() {
+    public function sales(Request $request) {
         $myData = self::me();
-        $orders = VisitorOrder::orderBy('created_at', 'DESC')->with(['details.digital_product_item','user','visitor'])
+        $filter = [];
+        if ($request->invoice != "") {
+            $filter[] = ['invoice_number', $request->invoice];
+        }
+        $orders = VisitorOrder::where($filter)->orderBy('created_at', 'DESC')
+        ->with(['details.digital_product_item','user','visitor'])
         ->paginate(25);
         
         return view('sales.Summary', [
             'myData' => $myData,
+            'request' => $request,
             'orders' => $orders
         ]);
     }
@@ -207,6 +214,7 @@ class AdminController extends Controller
     public function customer(Request $request) {
         $myData = self::me();
         $now = Carbon::now();
+        $mostValuableCustomer = null;
         $filter = [];
         if ($request->search != "") {
             $filter[] = [
@@ -274,5 +282,14 @@ class AdminController extends Controller
             $loggingOut = Auth::guard('admin')->logout();
             return redirect()->route('admin.loginPage', ['r' => 'admin.profile'])->with(['message' => "Password has been changed. Please login again"]);
         }
+    }
+    public function settings() {
+        $myData = self::me();
+        $settings = Setting::get();
+
+        return view('settings', [
+            'myData' => $myData,
+            'settings' => $settings
+        ]);
     }
 }

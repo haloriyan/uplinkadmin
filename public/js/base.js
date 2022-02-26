@@ -9,12 +9,13 @@ const scrollKe = dom => {
 }
 
 const post = (url, data) => {
+    let heads = { "Content-Type": "application/json" }
+    if (data !== undefined && data.hasOwnProperty('csrfToken')) {
+        heads['csrfToken'] = data.csrfToken;
+    }
     return fetch(url, {
         method: 'POST',
-        headers: {
-            "X-CSRF-TOKEN": data.csrfToken,
-            "Content-Type": "application/json"
-        },
+        headers: heads,
         body: JSON.stringify(data)
     })
     .then(res => res.json());

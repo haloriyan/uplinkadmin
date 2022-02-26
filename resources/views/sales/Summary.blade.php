@@ -1,11 +1,30 @@
 @extends('layouts.admin')
 
 @section('title', "Recent Sales")
+
+@section('searchBar')
+<div class="search-bar">
+    <form class="search-form d-flex align-items-center">
+        <input type="text" name="invoice" placeholder="Search with invoice number" title="Search with invoice number" value="{{ $request->search }}" />
+        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+    </form>
+</div>
+@endsection
     
 @section('content')
+@if ($request->invoice != "")
+    <div class="tinggi-40"></div>
+    <h5>Displaying transactions with invoice number <b>{{ $request->invoice }}</b>,
+        <a href="{{ route('sales') }}">
+            <div class="teks-kecil bagi mt-1">remove search</div>
+        </a>
+    </h5>
+@endif
+
 <table>
     <thead>
         <tr>
+            <th><i class="bi bi-menu-button-wide"></i></th>
             <th>Seller</th>
             <th>Buyer</th>
             <th>Total</th>
@@ -20,6 +39,7 @@
                 $visitorName = $visitor->name != null ? $visitor->name : "Belum ada nama";
             @endphp
             <tr>
+                <td>#{{ $item->invoice_number }}</td>
                 <td>
                     <div class="bagi lebar-20">
                         <img 

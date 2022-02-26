@@ -173,13 +173,13 @@
 
     <aside id="sidebar" class="sidebar">
       <ul class="sidebar-nav" id="sidebar-nav">
+        <!-- End Dashboard Nav -->
         <li class="nav-item">
-          <a class="nav-link" href="{{ route('admin.dashboard') }}">
+          <a class="nav-link collapsed" href="{{ route('admin.dashboard') }}">
             <i class="bi bi-grid"></i>
             <span>Dashboard</span>
           </a>
         </li>
-        <!-- End Dashboard Nav -->
 
         <li class="nav-item">
           <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#"> <i class="bi bi-menu-button-wide"></i><span>Transaction</span><i class="bi bi-chevron-down ms-auto"></i> </a>
@@ -211,10 +211,15 @@
         <!-- End Forms Nav -->
 
         <li class="nav-item">
-          <a class="nav-link collapsed" href="pages-blank.html">
-            <i class="bi bi-file-earmark"></i>
-            <span>Background</span>
-          </a>
+          <a class="nav-link collapsed" data-bs-target="#setting-nav" data-bs-toggle="collapse" href="#"> <i class="bx bx-cog"></i><span>Settings</span><i class="bi bi-chevron-down ms-auto"></i> </a>
+          <ul id="setting-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+            <li>
+              <a href="{{ route('settings.category') }}"> <i class="bi bi-circle"></i><span>Categories</span> </a>
+            </li>
+            <li>
+              <a href="{{ route('settings.email') }}"> <i class="bi bi-circle"></i><span>Email</span> </a>
+            </li>
+          </ul>
         </li>
         <!-- End Blank Page Nav -->
       </ul>

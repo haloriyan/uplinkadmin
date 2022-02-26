@@ -1,0 +1,106 @@
+@extends('layouts.admin')
+
+@section('title', "Categories")
+
+@section('head.dependencies')
+<style>
+    #renderCategories .del {
+        background-color: #fff;
+        color: #e74c3c;
+        margin-left: 5px;
+        position: relative;
+        top: -2px;
+        display: none;
+        width: 20px;
+        line-height: 20px;
+        text-align: center;
+        font-size: 12px;
+    }
+    #renderCategories .item:hover .del {
+        display: inline-block;
+    }
+    .box.special {
+        width: 200px;
+        border-radius: 900px;
+        margin: 0px;
+    }
+    button.special {
+        border-radius: 900px;
+    }
+</style>
+@endsection
+    
+@section('content')
+<div class="rata-tengah">
+    <div class="tinggi-40"></div>
+    <div class="bagi lebar-70 bg-putih rounded bayangan-5 smallPadding rata-kiri">
+        <div class="wrap">
+            <input type="hidden" id="categories" value="{{ implode(",", $categories) }}">
+            <span id="renderCategories"></span>
+            <form action="#" class="bagi" id="formAdd">
+                {{ csrf_field() }}
+                <input type="text" class="box special" id="category" name="category" placeholder="hit enter to save category">
+            </form>
+        </div>
+    </div>
+</div>
+@endsection
+
+@section('javascript')
+<script src="{{ asset('js/base.js') }}"></script>
+<script>
+    let input = select("#categories");
+    let categories = input.value.split(',');
+
+    const saveData = () => {
+        post("{{ route('settings.category.save') }}", {
+            csrfToken: select("input[name='_token']").value,
+            categories: categories
+        })
+        .then(res => {
+            console.log(res);
+        })
+    }
+
+    const render = () => {
+        select("#renderCategories").innerHTML = "";
+        categories.map(category => {
+            let content = `${category} <div onclick="removeCat('${category}')" class='del rounded-max pointer'><span class='bx bx-trash'></span></div>`;
+            if (category == 'Other') {
+                content = category;
+            }
+            createElement({
+                el: 'div',
+                attributes: [
+                    ['class', 'bagi bg-biru rounded-max mr-1 mb-3 item'],
+                    ['style', 'padding: 10px 20px'],
+                ],
+                html: content,
+                createTo: '#renderCategories'
+            })
+        });
+    }
+    render();
+
+    const removeCat = category => {
+        removeArray(category, categories);
+        input.value = categories.join(',');
+        render();
+        saveData();
+    }
+
+    select("#formAdd").onsubmit = e => {
+        let inp = select("#formAdd #category");
+        let total = categories.length;
+        let category = inp.value;
+        categories.splice((total - 1), 0, category);
+        inp.value = '';
+        input.value = categories.join(',');
+        render();
+        saveData();
+        
+        return false;
+        e.preventDefault();
+    }
+</script>
+@endsection

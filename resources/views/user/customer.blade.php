@@ -24,7 +24,7 @@
                                 <i class="bi bi-people-fill"></i>
                             </div>
                             <div class="ps-3">
-                            <h6>{{ $mostValuableCustomer->name }}</h6>
+                            <h6>{{ $mostValuableCustomer == null ? 0 : $mostValuableCustomer->name }}</h6>
                             <span class="text-muted teks-kecil">{{ $mostValuableCustomer->orders_count }}x Transactions</span>
                         </div>
                     </div>

@@ -192,7 +192,7 @@ select.box:focus {
 .rounded { border-radius: 5px; }
 .rounded-more { border-radius: 15px !important; }
 .rounded-none { border-radius: 0px; }
-.rounded-circle { border-radius: 999px; }
+.rounded-max { border-radius: 999px; }
 .corner-top-left { border-top-left-radius: 6px; }
 .corner-top-right { border-top-right-radius: 6px; }
 .corner-bottom-left { border-bottom-left-radius: 6px; }
