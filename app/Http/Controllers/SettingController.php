@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Session;
 use Illuminate\Http\Request;
 
 class SettingController extends Controller
@@ -47,5 +48,16 @@ class SettingController extends Controller
         $myData = AdminController::me();
         
         return view('settings.email', ['myData' => $myData]);
+    }
+    public function faq() {
+        $myData = AdminController::me();
+        $faqs = FaqController::get()->orderBy('updated_at', 'DESC')->get();
+        $message = Session::get('message');
+
+        return view('settings.faq', [
+            'faqs' => $faqs,
+            'myData' => $myData,
+            'message' => $message,
+        ]);
     }
 }

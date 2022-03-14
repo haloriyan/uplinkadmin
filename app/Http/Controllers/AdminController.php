@@ -292,4 +292,46 @@ class AdminController extends Controller
             'settings' => $settings
         ]);
     }
+    public function admin(Request $request) {
+        $myData = self::me();
+        $admins = Admin::get();
+        $message = Session::get('message');
+
+        return view('user.admin', [
+            'admins' => $admins,
+            'myData' => $myData,
+            'message' => $message,
+            'request' => $request,
+        ]);
+    }
+    public function adminStore(Request $request) {
+        $saveData = Admin::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+        ]);
+
+        return redirect()->route('user.admin')->with(['message' => "New admin has been added"]);
+    }
+    public function adminDelete($id) {
+        $data = Admin::where('id', $id);
+        $admin = $data->first();
+        $deleteData = $data->delete();
+
+        return redirect()->route('user.admin')->with(['message' => $admin->name." has been deleted"]);
+    }
+    public function adminUpdate(Request $request) {
+        $toUpdate = [
+            'name' => $request->name,
+            'email' => $request->email,
+        ];
+        if ($request->password != "") {
+            $toUpdate['password'] = bcrypt($request->password);
+        }
+        $data = Admin::where('id', $request->id);
+        $admin = $data->first();
+        $updateData = $data->update($toUpdate);
+        
+        return redirect()->route('user.admin')->with(['message' => $admin->name."'s data has been updated"]);
+    }
 }

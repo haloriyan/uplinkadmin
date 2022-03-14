@@ -520,7 +520,7 @@ table td form { display: inline-block; }
     position: fixed;
     top: 0px;left: 0px;right: 0px;bottom: 0px;
     background-color: #00000075;
-    z-index: 9;
+    z-index: 999;
     display: none;
 }
 .popupWrapper {
@@ -529,7 +529,7 @@ table td form { display: inline-block; }
 	top: 0px;left: 0%;right: 0%;bottom: 0px;
 	overflow: auto;
 	transition: 0.4s;
-    z-index: 10;
+    z-index: 1001;
     text-align: center;
 }
 .popupWrapper::-webkit-scrollbar {
