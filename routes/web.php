@@ -38,6 +38,7 @@ Route::group(['prefix' => 'user'], function () {
     Route::get('seller', "AdminController@seller")->name('user.seller')->middleware('Admin');
     Route::get('seller/{id}', "AdminController@sellerDetail")->name('user.seller.detail')->middleware('Admin');
     Route::get('customer', "AdminController@customer")->name('user.customer')->middleware('Admin');
+    Route::get('customer/{id}/delete', "CustomerController@delete")->name('user.customer.delete');
     
     Route::group(['prefix' => "admin"], function () {
         Route::get('/', "AdminController@admin")->name('user.admin')->middleware('Admin');

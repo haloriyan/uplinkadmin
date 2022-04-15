@@ -78,6 +78,9 @@
                     <a href="{{ route('user.seller.detail', $user->id) }}">
                         <i class="bi bi-eye" style="font-size: 18px; color: #01b9c2"></i>
                     </a>
+                    <a href="{{ env('BASE_URL') }}/api/user/{{ $user->id }}/delete/admin" class="teks-merah ml-1" onclick="return confirm('Are you sure deleting this user? All related data will be lost')">
+                        <i class="bi bi-trash"></i>
+                    </a>
                 </td>
             </tr>
         @endforeach
@@ -92,7 +95,7 @@
 @section('javascript')
 <script src="https://unpkg.com/boxicons@2.1.1/dist/boxicons.js"></script>
 <script>
-    const select = dom => document.querySelector(dom);
+    // const select = dom => document.querySelector(dom);
     let cvs = select('#myChart');
 
     let chartData = JSON.parse(select("input#datas").value);
