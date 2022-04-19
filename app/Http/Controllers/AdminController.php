@@ -20,7 +20,7 @@ class AdminController extends Controller
 {
     public function me($getMessage = true) {
         $myData = Auth::guard('admin')->user();
-        $myData->messages = [];
+        $myData->messages = new \stdClass();
         if ($getMessage) {
             $myData->messages = ContactMessage::where('has_read', 0)->orderBy('created_at', 'DESC')->get();
         }
