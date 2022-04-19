@@ -19,8 +19,8 @@ use Illuminate\Http\Request;
 class AdminController extends Controller
 {
     public function me($getMessage = true) {
+        $myData = new \stdClass();
         $myData = Auth::guard('admin')->user();
-        $myData->messages = new \stdClass();
         if ($getMessage) {
             $myData->messages = ContactMessage::where('has_read', 0)->orderBy('created_at', 'DESC')->get();
         }
