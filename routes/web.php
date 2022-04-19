@@ -15,6 +15,7 @@ Route::get('profile', "AdminController@profile")->name('admin.profile')->middlew
 Route::post('profile/update', "AdminController@updateProfile")->name('profile.update')->middleware('Admin');
 Route::get('withdrawal', "AdminController@withdrawal")->name('admin.withdrawal')->middleware('Admin');
 Route::get('settings', "AdminController@settings")->name('settings')->middleware('Admin');
+Route::get('message/{id?}', "AdminController@message")->name('admin.message')->middleware('Admin');
 
 Route::group(['prefix' => "settings"], function () {
     Route::get('category', "SettingController@category")->name('settings.category')->middleware('Admin');

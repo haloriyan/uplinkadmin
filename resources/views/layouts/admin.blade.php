@@ -1,3 +1,6 @@
+@php
+  use Carbon\Carbon;
+@endphp
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -54,72 +57,34 @@
 
           <li class="nav-item dropdown">
             <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-              <i class="bi bi-bell"></i>
-              <span class="badge bg-primary badge-number">4</span> </a
-            ><!-- End Notification Icon -->
+              <i class="bx bx-message-dots"></i>
+              <span class="badge bg-primary badge-number">{{ $myData->messages->count() }}</span> 
+            </a>
 
             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
               <li class="dropdown-header">
-                You have 4 new notifications
+                You have {{ $myData->messages->count() }} new contact messages
                 <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
               </li>
-              <li>
-                <hr class="dropdown-divider" />
-              </li>
 
-              <li class="notification-item">
-                <i class="bi bi-exclamation-circle text-warning"></i>
-                <div>
-                  <h4>Lorem Ipsum</h4>
-                  <p>Quae dolorem earum veritatis oditseno</p>
-                  <p>30 min. ago</p>
-                </div>
-              </li>
-
-              <li>
-                <hr class="dropdown-divider" />
-              </li>
-
-              <li class="notification-item">
-                <i class="bi bi-x-circle text-danger"></i>
-                <div>
-                  <h4>Atque rerum nesciunt</h4>
-                  <p>Quae dolorem earum veritatis oditseno</p>
-                  <p>1 hr. ago</p>
-                </div>
-              </li>
-
-              <li>
-                <hr class="dropdown-divider" />
-              </li>
-
-              <li class="notification-item">
-                <i class="bi bi-check-circle text-success"></i>
-                <div>
-                  <h4>Sit rerum fuga</h4>
-                  <p>Quae dolorem earum veritatis oditseno</p>
-                  <p>2 hrs. ago</p>
-                </div>
-              </li>
-
-              <li>
-                <hr class="dropdown-divider" />
-              </li>
-
-              <li class="notification-item">
-                <i class="bi bi-info-circle text-primary"></i>
-                <div>
-                  <h4>Dicta reprehenderit</h4>
-                  <p>Quae dolorem earum veritatis oditseno</p>
-                  <p>4 hrs. ago</p>
-                </div>
-              </li>
-
-              <li>
-                <hr class="dropdown-divider" />
-              </li>
+              @foreach ($myData->messages as $item)
+                <a href="{{ route('admin.message', $item->id) }}">
+                  <li class="notification-item">
+                    <i class="bi bi-info-circle text-primary"></i>
+                    <div>
+                      <h4>{{ $item->name }}</h4>
+                      <p>{{ substr($item->message, 0, 20) }}</p>
+                      <p>{{ Carbon::parse($item->created_at)->diffForHumans() }}</p>
+                    </div>
+                  </li>
+  
+                  <li>
+                    <hr class="dropdown-divider" />
+                  </li>
+                </a>
+              @endforeach
               <li class="dropdown-footer">
-                <a href="#">Show all notifications</a>
+                <a href="{{ route('admin.message') }}">Show all notifications</a>
               </li>
             </ul>
             <!-- End Notification Dropdown Items -->

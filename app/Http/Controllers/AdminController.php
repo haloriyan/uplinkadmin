@@ -12,12 +12,18 @@ use App\Models\User;
 use App\Models\UserWithdraw;
 use App\Models\Visitor;
 use App\Models\VisitorOrder;
+use App\Models\ContactMessage;
+
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    public function me() {
-        return Auth::guard('admin')->user();
+    public function me($getMessage = true) {
+        $myData = Auth::guard('admin')->user();
+        if ($getMessage) {
+            $myData->messages = ContactMessage::where('has_read', 0)->orderBy('created_at', 'DESC')->get();
+        }
+        return $myData;
     }
     public function loginPage(Request $request) {
         $myData = self::me();
@@ -333,5 +339,30 @@ class AdminController extends Controller
         $updateData = $data->update($toUpdate);
         
         return redirect()->route('user.admin')->with(['message' => $admin->name."'s data has been updated"]);
+    }
+    public function message($id = NULL, Request $request) {
+        $message = null;
+        $search = [];
+        if ($id != NULL) {
+            $data = ContactMessage::where('id', $id);
+            $data->update(['has_read' => 1]);
+            $message = $data->first();
+        }
+        if ($request->sender != "") {
+            $message = null;
+            array_push($search, [
+                'name', 'LIKE', "%".$request->sender."%"
+            ]);
+        }
+
+        $messages = ContactMessage::where($search)->orderBy('created_at', 'DESC')->paginate(15);
+        $myData = self::me();
+        
+        return view('message', [
+            'messages' => $messages,
+            'message' => $message,
+            'myData' => $myData,
+            'request' => $request,
+        ]);
     }
 }
