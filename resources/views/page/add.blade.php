@@ -26,7 +26,7 @@
 
     select("#form").onsubmit = function (e) {
         let title = select("#title").value;
-        let body = select("#body").value;
+        let body = CKEDITOR.instances['body'].getData();
         
         post("{{ env('REMOTE_URL') }}/api/page/store", {
             title: title,
