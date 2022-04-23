@@ -173,6 +173,23 @@
             </li>
           </ul>
         </li>
+
+        <li class="nav-item">
+          <a class="nav-link collapsed" data-bs-target="#pages-nav" data-bs-toggle="collapse" href="#"> <i class="bx bx-edit"></i><span>Pages</span><i class="bi bi-chevron-down ms-auto"></i> </a>
+          <ul id="pages-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+            <li>
+              <a href="{{ route('page') }}"> <i class="bx bx-plus-circle"></i><span>All Pages</span> </a>
+            </li>
+            @foreach ($myData->pages as $page)
+              <li>
+                <a href="{{ route('page.edit', $page->id) }}"> <i class="bx bx-circle"></i><span>{{ $page->title }}</span> </a>
+              </li>
+            @endforeach
+            <li>
+              <a href="{{ route('page.add') }}"> <i class="bx bx-plus-circle"></i><span>Add New</span> </a>
+            </li>
+          </ul>
+        </li>
         <!-- End Forms Nav -->
 
         <li class="nav-item">

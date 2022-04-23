@@ -17,6 +17,12 @@ Route::get('withdrawal', "AdminController@withdrawal")->name('admin.withdrawal')
 Route::get('settings', "AdminController@settings")->name('settings')->middleware('Admin');
 Route::get('message/{id?}', "AdminController@message")->name('admin.message')->middleware('Admin');
 
+Route::group(['prefix' => "page"], function () {
+    Route::get('add', "PageController@add")->name('page.add');
+    Route::get('{id}/edit', "PageController@edit")->name('page.edit');
+    Route::get('/', "AdminController@page")->name('page');
+});
+
 Route::group(['prefix' => "settings"], function () {
     Route::get('category', "SettingController@category")->name('settings.category')->middleware('Admin');
     Route::post('category/save', "SettingController@saveCategory")->name('settings.category.save')->middleware('Admin');

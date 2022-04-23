@@ -21,8 +21,9 @@ class AdminController extends Controller
     public function me($getMessage = true) {
         $myData = new \stdClass();
         $myData = Auth::guard('admin')->user();
-        if ($getMessage) {
+        if ($myData != "") {
             $myData->messages = ContactMessage::where('has_read', 0)->orderBy('created_at', 'DESC')->get();
+            $myData->pages = PageController::get()->orderBy('title', 'ASC')->get();
         }
         return $myData;
     }
@@ -364,6 +365,15 @@ class AdminController extends Controller
             'message' => $message,
             'myData' => $myData,
             'request' => $request,
+        ]);
+    }
+    public function page() {
+        $myData = self::me();
+        $pages = PageController::get()->orderBy('title', 'ASC')->get();
+        
+        return view('page.index', [
+            'myData' => $myData,
+            'pages' => $pages,
         ]);
     }
 }
